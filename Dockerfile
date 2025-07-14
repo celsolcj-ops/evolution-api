@@ -1,7 +1,5 @@
 FROM node:20-alpine AS builder
 
-FROM node:20-alpine AS builder
-
 # --- ADICIONE ESTA LINHA ABAIXO ---
 ARG CACHE_BUSTER=1
 
