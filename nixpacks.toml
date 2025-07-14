@@ -1,0 +1,24 @@
+# Configuração para o provedor Nixpacks na Railway
+providers = ["node"]
+
+[phases.setup]
+# Pacotes necessários para a Evolution API
+pkgs = [
+    "git",
+    "ffmpeg",
+    "wget",
+    "curl",
+    "bash",
+    "openssl",
+    "nodejs_20",
+    "npm_10",
+    "prisma_5"
+]
+
+[phases.build]
+# Comandos para construir a aplicação
+cmds = ["npm install --legacy-peer-deps", "npm run build"]
+
+[start]
+# Comando para iniciar a aplicação, incluindo a migração do banco de dados
+cmd = "npx prisma migrate deploy --schema ./prisma/postgresql-schema.prisma && npm run start:prod"
