@@ -6,9 +6,6 @@ FROM node:20-alpine AS builder
 ARG CACHE_BUSTER=1
 
 RUN apk update && \
-# ... resto do arquivo
-
-RUN apk update && \
     apk add --no-cache git ffmpeg wget curl bash openssl
 
 LABEL version="2.3.0" description="Api to control whatsapp features through http requests." 
