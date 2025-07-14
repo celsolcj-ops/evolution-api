@@ -58,8 +58,6 @@ ENV DOCKER_ENV=true
 
 EXPOSE 8080
 
-# --- A SOLUÇÃO ESTÁ AQUI ---
-# Define as variáveis de ambiente necessárias no momento da execução do container
 ENV DATABASE_PROVIDER=postgresql
 ENV DATABASE_URL="postgres://railway:4P40sSFqF3Xz~qtivWH7RATnR-EvH4i7@postgres.railway.internal:5432/railway"
 
