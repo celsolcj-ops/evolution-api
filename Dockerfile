@@ -58,8 +58,4 @@ ENV DOCKER_ENV=true
 
 EXPOSE 8080
 
-# Pega a variável de build da Railway e a "fixa" como uma variável de ambiente para o runtime
-ARG DATABASE_URL
-ENV DATABASE_URL=$DATABASE_URL
-
 ENTRYPOINT ["/bin/bash", "-c", ". ./Docker/scripts/deploy_database.sh && npm run start:prod" ]
