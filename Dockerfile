@@ -58,6 +58,8 @@ ENV DOCKER_ENV=true
 
 EXPOSE 8080
 
-ENV DATABASE_URL="postgres://railway:4P40sSFqF3Xz~qtivWH7RATnR-EvH4i7@postgres.railway.internal:5432/railway"
+# Pega a variável de build da Railway e a "fixa" como uma variável de ambiente para o runtime
+ARG DATABASE_URL
+ENV DATABASE_URL=$DATABASE_URL
 
 ENTRYPOINT ["/bin/bash", "-c", ". ./Docker/scripts/deploy_database.sh && npm run start:prod" ]
