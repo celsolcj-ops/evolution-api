@@ -57,9 +57,5 @@ COPY --from=builder /evolution/tsup.config.ts ./tsup.config.ts
 ENV DOCKER_ENV=true
 
 EXPOSE 8080
-# --- A CORREÇÃO DEFINITIVA ---
-# Define a variável com o NOME EXATO que o Prisma espera.
-ENV DATABASE_PROVIDER=postgresql
-ENV DATABASE_CONNECTION_URI="postgres://railway:4P40sSFqF3Xz~qtivWH7RATnR-EvH4i7@postgres.railway.internal:5432/railway"
 
 ENTRYPOINT ["/bin/bash", "-c", ". ./Docker/scripts/deploy_database.sh && npm run start:prod" ]
