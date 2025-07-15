@@ -10,7 +10,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  // A URL de conexão está "hard-coded" para garantir que o Prisma a encontre durante o deploy.
   url      = "postgres://railway:4P40sSFqF3Xz~qtivWH7RATnR-EvH4i7@postgres.railway.internal:5432/railway"
 }
 
