@@ -55,7 +55,7 @@ COPY --from=builder /evolution/runWithProvider.js ./runWithProvider.js
 COPY --from=builder /evolution/tsup.config.ts ./tsup.config.ts
 
 ENV DOCKER_ENV=true
-ENV API_KEY="SmartBusinessis#1oftheworld&SAFE"
+ENV AUTHENTICATION_API_KEY="SmartBusinessis#1oftheworld&SAFE"
 
 EXPOSE 8080
 
