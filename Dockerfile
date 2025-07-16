@@ -79,8 +79,9 @@ COPY --from=builder /evolution/.chromium ./.chromium
 # --- A CONFIGURAÇÃO DEFINITIVA ---
 # Embutindo todas as variáveis de conexão para contornar o problema da Railway.
 # A aplicação agora nascerá sabendo onde encontrar o Postgres e o Redis.
-ENV DATABASE_URL="SUA_URL_DE_CONEXAO_DO_EVOLUTION-DB"
-ENV CACHE_REDIS_URI="SUA_URL_DE_CONEXAO_DO_REDIS"
+ENV DATABASE_URL="postgresql://postgres:rSaBjTGSCzGctqabjulrWRwmmUVudUzV@postgres-d2dp.railway.internal:5432/railway"
+ENV DATABASE_PROVIDER=postgresql
+ENV CACHE_REDIS_URI="redis://default:chRsbo~z5gpQDWvDnFIJUo2a0xjzQiTf@redis.railway.internal:6379"
 ENV CACHE_REDIS_ENABLED=true
 ENV CACHE_REDIS_SAVE_INSTANCES=true
 
