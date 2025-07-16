@@ -10,7 +10,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://postgres:rSaBjTGSCzGctqabjulrWRwmmUVudUzV@postgres-d2dp.railway.internal:5432/railway"
+  url      = env("DATABASE_URL")
 }
 
 enum InstanceConnectionStatus {
