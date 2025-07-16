@@ -74,6 +74,7 @@ WORKDIR /evolution
 COPY --from=builder /evolution/node_modules ./node_modules
 COPY --from=builder /evolution/dist ./dist
 COPY --from=builder /evolution/prisma ./prisma
+COPY --from=builder /evolution/.chromium ./.chromium 
 
 # --- A CONFIGURAÇÃO DEFINITIVA ---
 # Embutindo todas as variáveis de conexão para contornar o problema da Railway.
