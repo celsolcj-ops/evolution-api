@@ -76,6 +76,8 @@ COPY --from=builder /evolution/dist ./dist
 COPY --from=builder /evolution/prisma ./prisma
 COPY --from=builder /evolution/.chromium ./.chromium 
 
+EXPOSE 8080
+
 # --- A CONFIGURAÇÃO DEFINITIVA ---
 # Embutindo todas as variáveis de conexão para contornar o problema da Railway.
 # A aplicação agora nascerá sabendo onde encontrar o Postgres e o Redis.
@@ -84,7 +86,6 @@ ENV DATABASE_PROVIDER=postgresql
 ENV CACHE_REDIS_URI="redis://default:chRsbo~z5gpQDWvDnFIJUo2a0xjzQiTf@redis.railway.internal:6379"
 ENV CACHE_REDIS_ENABLED=true
 ENV CACHE_REDIS_SAVE_INSTANCES=true
+ENV AUTHENTICATION_API_KEY="SmartBusinessis#1oftheworld&SAFE"
 
-EXPOSE 8080
-
-CMD ["npm", "run", "start:prod"]
+ENTRYPOINT ["/bin/bash", "-c", ". ./Docker/scripts/deploy_database.sh && npm run start:prod"]
