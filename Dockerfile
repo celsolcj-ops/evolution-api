@@ -75,8 +75,13 @@ COPY --from=builder /evolution/node_modules ./node_modules
 COPY --from=builder /evolution/dist ./dist
 COPY --from=builder /evolution/prisma ./prisma
 
-# Define a variável de ambiente para a chave da API
-ENV AUTHENTICATION_API_KEY="SmartBusinessis#1oftheworld&SAFE"
+# --- A CONFIGURAÇÃO DEFINITIVA ---
+# Embutindo todas as variáveis de conexão para contornar o problema da Railway.
+# A aplicação agora nascerá sabendo onde encontrar o Postgres e o Redis.
+ENV DATABASE_URL="SUA_URL_DE_CONEXAO_DO_EVOLUTION-DB"
+ENV CACHE_REDIS_URI="SUA_URL_DE_CONEXAO_DO_REDIS"
+ENV CACHE_REDIS_ENABLED=true
+ENV CACHE_REDIS_SAVE_INSTANCES=true
 
 EXPOSE 8080
 
