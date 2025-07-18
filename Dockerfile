@@ -31,7 +31,7 @@ ENV PUPPETEER_CACHE_DIR=/.cache/puppeteer
 RUN npx @puppeteer/browsers install chromium
 
 # Gera o cliente do Prisma, agora que o schema.prisma já foi copiado
-RUN npx prisma generate --schema ./prisma/schema.prisma
+RUN npx prisma generate --schema ./prisma/postgresql-schema.prisma
 
 # Compila a aplicação
 RUN npm run build
