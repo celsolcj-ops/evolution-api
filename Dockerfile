@@ -53,6 +53,10 @@ RUN npm install --legacy-peer-deps
 
 COPY . .
 
+# --- A CORREÇÃO FINAL ESTÁ AQUI ---
+# Adicionamos o comando para gerar o cliente do Prisma ANTES do build
+RUN npx prisma generate --schema ./prisma/postgresql-schema.prisma
+
 RUN npm run build
 
 
