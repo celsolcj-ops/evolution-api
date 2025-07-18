@@ -1,60 +1,21 @@
+# Este arquivo docker-compose foi otimizado para a arquitetura híbrida:
+# - A Evolution API roda no VPS da Hostinger.
+# - O banco de dados Postgres e o Redis são os serviços já existentes na Railway.
 services:
-  api:
+  evolution-api:
+    # 'build: .' instrui o Docker a construir a imagem a partir do Dockerfile
+    # que está nesta mesma pasta, garantindo que todas as nossas correções sejam usadas.
+    build: .
     container_name: evolution_api
-    image: evoapicloud/evolution-api:latest
-    restart: always
-    depends_on:
-      - redis
-      - postgres
+    restart: unless-stopped
     ports:
-      - 8080:8080
-    volumes:
-      - evolution_instances:/evolution/instances
-    networks:
-      - evolution-net
+      - "0.0.0.0:8080:8080" # Mapeia a porta 8080 para ser acessível externamente
     env_file:
-      - .env
-    expose:
-      - 8080
-
-  redis:
-    image: redis:latest
-    networks:
-      - evolution-net
-    container_name: redis
-    command: >
-      redis-server --port 6379 --appendonly yes
+      - .env # Instrução para carregar as variáveis do arquivo .env
     volumes:
-      - evolution_redis:/data
-    ports:
-      - 6379:6379
+      - ./evolution_data:/evolution/data
 
-  postgres:
-    container_name: postgres
-    image: postgres:15
-    networks:
-      - evolution-net
-    command: ["postgres", "-c", "max_connections=1000", "-c", "listen_addresses=*"]
-    restart: always
-    ports:
-      - 5432:5432
-    environment:
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=pass
-      - POSTGRES_DB=evolution
-      - POSTGRES_HOST_AUTH_METHOD=trust
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    expose:
-      - 5432
-
+# Os serviços de postgres e redis foram removidos, pois usaremos os da Railway.
+# Os volumes e redes locais também não são mais necessários.
 volumes:
-  evolution_instances:
-  evolution_redis:
-  postgres_data:
-
-
-networks:
-  evolution-net:
-    name: evolution-net
-    driver: bridge
+  evolution_data:
