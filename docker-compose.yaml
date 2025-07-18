@@ -1,5 +1,4 @@
-version: '3.8'
-
+# docker-compose.yml para Arquitetura Híbrida (Versão Segura)
 services:
   evolution-api:
     build: .
@@ -7,16 +6,7 @@ services:
     restart: unless-stopped
     ports:
       - "0.0.0.0:8080:8080"
-    environment:
-      # Aponta para o seu banco de dados Postgres na RAILWAY
-      - DATABASE_URL=postgresql://postgres:rSaBjTGSCzGctqabjulrWRwmmUVudUzV@yamabiko.proxy.rlwy.net:31303/railway
-      # Aponta para o seu Redis na RAILWAY
-      - CACHE_REDIS_URI=redis://default:chRsbo~z5gpQDWvDnFIJUo2a0xjzQiTf@redis.railway.internal:6379
-      # Sua chave de API para proteger a Evolution API
-      - AUTHENTICATION_API_KEY=SmartBusinessis#1oftheworld&SAFE
-      # Variáveis de Configuração Essenciais
-      - DATABASE_PROVIDER=postgresql
-      - CACHE_REDIS_ENABLED=true
-      - CACHE_REDIS_SAVE_INSTANCES=true
+    env_file:
+      - .env # Instrução para carregar as variáveis do arquivo .env
     volumes:
       - ./evolution_data:/evolution/data
