@@ -1,21 +1,23 @@
-# Este arquivo docker-compose foi otimizado para a arquitetura híbrida:
-# - A Evolution API roda no VPS da Hostinger.
-# - O banco de dados Postgres e o Redis são os serviços já existentes na Railway.
+version: '3.8'
+
 services:
   evolution-api:
-    # 'build: .' instrui o Docker a construir a imagem a partir do Dockerfile
-    # que está nesta mesma pasta, garantindo que todas as nossas correções sejam usadas.
     build: .
     container_name: evolution_api
     restart: unless-stopped
     ports:
-      - "0.0.0.0:8080:8080" # Mapeia a porta 8080 para ser acessível externamente
-    env_file:
-      - .env # Instrução para carregar as variáveis do arquivo .env
+      - "0.0.0.0:8080:8080"
+    environment:
+      # --- CONFIGURAÇÕES CRÍTICAS ---
+      # Aponta para o seu banco de dados Postgres na RAILWAY
+      - DATABASE_URL=SUA_URL_EXTERNA_DO_POSTGRES_DA_RAILWAY
+      # Aponta para o seu Redis na RAILWAY
+      - CACHE_REDIS_URI=SUA_URL_EXTERNA_DO_REDIS_DA_RAILWAY
+      # Sua chave de API para proteger a Evolution API
+      - AUTHENTICATION_API_KEY=SUA_API_KEY_AQUI
+      # --- Variáveis de Configuração Essenciais ---
+      - DATABASE_PROVIDER=postgresql
+      - CACHE_REDIS_ENABLED=true
+      - CACHE_REDIS_SAVE_INSTANCES=true
     volumes:
       - ./evolution_data:/evolution/data
-
-# Os serviços de postgres e redis foram removidos, pois usaremos os da Railway.
-# Os volumes e redes locais também não são mais necessários.
-volumes:
-  evolution_data:
