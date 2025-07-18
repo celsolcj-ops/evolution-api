@@ -50,7 +50,8 @@ WORKDIR /evolution
 
 COPY ./package.json ./tsconfig.json ./
 RUN npm install --legacy-peer-deps
-
+# Força o download do Chromium durante o build
+RUN npx @puppeteer/browsers install chromium
 COPY . .
 
 # --- A CORREÇÃO FINAL ESTÁ AQUI ---
