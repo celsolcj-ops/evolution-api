@@ -50,7 +50,8 @@ WORKDIR /evolution
 
 COPY ./package.json ./tsconfig.json ./
 RUN npm install --legacy-peer-deps
-# Força o download do Chromium durante o build
+ENV PUPPETEER_CACHE_DIR=/.cache/puppeteer
+# Força o download do Chromium durante o build para o local definido
 RUN npx @puppeteer/browsers install chromium
 COPY . .
 
