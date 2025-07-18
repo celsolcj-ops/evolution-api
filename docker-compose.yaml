@@ -1,4 +1,3 @@
-# docker-compose.yml para Arquitetura Híbrida (Versão Segura)
 services:
   evolution-api:
     build: .
@@ -6,7 +5,8 @@ services:
     restart: unless-stopped
     ports:
       - "0.0.0.0:8080:8080"
-    env_file:
-      - .env # Instrução para carregar as variáveis do arquivo .env
     volumes:
+      # Monta o arquivo .env do servidor para dentro do container
+      - ./.env:/evolution/.env
+      # Monta o volume de dados para persistência da sessão
       - ./evolution_data:/evolution/data
