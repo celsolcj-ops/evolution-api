@@ -29,7 +29,9 @@ RUN npx @puppeteer/browsers install chromium
 COPY . .
 
 # Gera o cliente do Prisma antes de compilar a aplicação
-RUN npx prisma generate --schema ./prisma/schema.prisma
+# ...
+RUN npx prisma generate --schema /evolution/prisma/schema.prisma
+# ...
 
 RUN npm run build
 
