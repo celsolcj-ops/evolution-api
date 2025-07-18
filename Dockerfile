@@ -29,13 +29,13 @@ RUN npx @puppeteer/browsers install chromium
 COPY . .
 
 # Gera o cliente do Prisma antes de compilar a aplicação
-# ...
-RUN npx prisma generate --schema /evolution/prisma/schema.prisma
-# ...
+# O caminho correto para o schema deve ser relativo à pasta copiada
+RUN npx prisma generate --schema ./prisma/schema.prisma
 
 RUN npm run build
 
-# Estágio 2: Final - Usa uma imagem slim para manter o tamanho reduzido
+
+# Estágio 2: Final - Usa uma imagem slim para manter o tamanho reduzido, mas herda o necessário
 FROM node:20-bookworm-slim AS final
 
 # Instala apenas as dependências de runtime necessárias
