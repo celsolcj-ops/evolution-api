@@ -10,59 +10,30 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     dos2unix \
     ffmpeg \
     # Dependências do motor do WhatsApp (headless browser)
-    ca-certificates \
-    fonts-liberation \
-    libasound2 \
-    libatk-bridge2.0-0 \
-    libatk1.0-0 \
-    libc6 \
-    libcairo2 \
-    libcups2 \
-    libdbus-1-3 \
-    libexpat1 \
-    libfontconfig1 \
-    libgbm1 \
-    libgcc1 \
-    libglib2.0-0 \
-    libgtk-3-0 \
-    libnspr4 \
-    libnss3 \
-    libpango-1.0-0 \
-    libpangocairo-1.0-0 \
-    libstdc++6 \
-    libx11-6 \
-    libx11-xcb1 \
-    libxcb1 \
-    libxcomposite1 \
-    libxcursor1 \
-    libxdamage1 \
-    libxext6 \
-    libxfixes3 \
-    libxi6 \
-    libxrandr2 \
-    libxrender1 \
-    libxss1 \
-    libxtst6 \
-    lsb-release \
-    xdg-utils
+    ca-certificates fonts-liberation libasound2 libatk-bridge2.0-0 libatk1.0-0 \
+    libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgbm1 \
+    libgcc1 libglib2.0-0 libgtk-3-0 libnspr4 libnss3 libpango-1.0-0 \
+    libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 \
+    libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 \
+    libxrandr2 libxrender1 libxss1 libxtst6 lsb-release xdg-utils
 
 WORKDIR /evolution
 
 COPY ./package.json ./tsconfig.json ./
 RUN npm install --legacy-peer-deps
+
+# Garante que a pasta de cache do puppeteer exista antes de copiar o código
 ENV PUPPETEER_CACHE_DIR=/.cache/puppeteer
-# Força o download do Chromium durante o build para o local definido
 RUN npx @puppeteer/browsers install chromium
+
 COPY . .
 
-# --- A CORREÇÃO FINAL ESTÁ AQUI ---
-# Adicionamos o comando para gerar o cliente do Prisma ANTES do build
-RUN npx prisma generate --schema ./prisma/postgresql-schema.prisma
+# Gera o cliente do Prisma antes de compilar a aplicação
+RUN npx prisma generate --schema ./prisma/schema.prisma
 
 RUN npm run build
 
-
-# Estágio 2: Final - Usa uma imagem slim para manter o tamanho reduzido, mas herda o necessário
+# Estágio 2: Final - Usa uma imagem slim para manter o tamanho reduzido
 FROM node:20-bookworm-slim AS final
 
 # Instala apenas as dependências de runtime necessárias
@@ -80,12 +51,11 @@ WORKDIR /evolution
 COPY --from=builder /evolution/node_modules ./node_modules
 COPY --from=builder /evolution/dist ./dist
 COPY --from=builder /evolution/prisma ./prisma
-COPY --from=builder /evolution/.chromium ./.chromium
-# Adicionando cópias de outros arquivos importantes para o runtime
 COPY --from=builder /evolution/public ./public
 COPY --from=builder /evolution/manager ./manager
 COPY --from=builder /evolution/runWithProvider.js ./runWithProvider.js
 COPY --from=builder /evolution/Docker ./Docker
+COPY --from=builder /.cache/puppeteer ./.cache/puppeteer
 
 EXPOSE 8080
 
