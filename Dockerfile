@@ -1,7 +1,7 @@
 # Estágio 1: Builder - Usa uma imagem Debian completa para garantir as dependências
 FROM node:20-bookworm AS builder
 
-# Instala as dependências de sistema essenciais, incluindo as para o Chromium/Baileys
+# Instala as dependências de sistema essenciais
 RUN apt-get update && apt-get install -y --no-install-recommends \
     wget \
     git \
@@ -22,20 +22,22 @@ WORKDIR /evolution
 COPY ./package.json ./tsconfig.json ./
 RUN npm install --legacy-peer-deps
 
-# Garante que a pasta de cache do puppeteer exista antes de copiar o código
+# --- A CORREÇÃO ESTÁ AQUI ---
+# Copia TODOS os arquivos do projeto ANTES de executar qualquer script que dependa deles
+COPY . .
+
+# Garante que a pasta de cache do puppeteer exista
 ENV PUPPETEER_CACHE_DIR=/.cache/puppeteer
 RUN npx @puppeteer/browsers install chromium
 
-COPY . .
-
-# Gera o cliente do Prisma antes de compilar a aplicação
-# O caminho correto para o schema deve ser relativo à pasta copiada
+# Gera o cliente do Prisma, agora que o schema.prisma já foi copiado
 RUN npx prisma generate --schema ./prisma/schema.prisma
 
+# Compila a aplicação
 RUN npm run build
 
 
-# Estágio 2: Final - Usa uma imagem slim para manter o tamanho reduzido, mas herda o necessário
+# Estágio 2: Final - Usa uma imagem slim para manter o tamanho reduzido
 FROM node:20-bookworm-slim AS final
 
 # Instala apenas as dependências de runtime necessárias
