@@ -46,7 +46,7 @@ WORKDIR /evolution
 COPY --from=builder /evolution/node_modules ./node_modules
 COPY --from=builder /evolution/dist ./dist
 COPY --from=builder /evolution/prisma ./prisma
-COPY --from=builder /evolution/.cache/puppeteer ./.cache/puppeteer
+COPY --from=builder ${PUPPETEER_CACHE_DIR} ${PUPPETEER_CACHE_DIR}
 COPY --from=builder /evolution/public ./public
 COPY --from=builder /evolution/manager ./manager
 COPY --from=builder /evolution/runWithProvider.js ./runWithProvider.js
