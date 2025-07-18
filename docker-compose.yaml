@@ -1,5 +1,5 @@
-version: '3.8'
-
+# docker-compose.yml para Arquitetura Híbrida
+# API na Hostinger, Bancos de Dados na Railway
 services:
   evolution-api:
     build: .
@@ -9,9 +9,9 @@ services:
       - "0.0.0.0:8080:8080"
     environment:
       # --- CONFIGURAÇÕES CRÍTICAS ---
-      # O nome correto da variável que o prisma/schema.prisma espera
-      - DATABASE_CONNECTION_URI=SUA_URL_EXTERNA_DO_POSTGRES_DA_RAILWAY
-      # Aponta para o seu Redis na RAILWAY
+      # Aponta para o seu banco de dados Postgres na RAILWAY (use a URL externa)
+      - DATABASE_URL=SUA_URL_EXTERNA_DO_POSTGRES_DA_RAILWAY
+      # Aponta para o seu Redis na RAILWAY (use a URL externa)
       - CACHE_REDIS_URI=SUA_URL_EXTERNA_DO_REDIS_DA_RAILWAY
       # Sua chave de API para proteger a Evolution API
       - AUTHENTICATION_API_KEY=SUA_API_KEY_AQUI
