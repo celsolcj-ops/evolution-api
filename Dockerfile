@@ -74,8 +74,14 @@ WORKDIR /evolution
 COPY --from=builder /evolution/node_modules ./node_modules
 COPY --from=builder /evolution/dist ./dist
 COPY --from=builder /evolution/prisma ./prisma
-COPY --from=builder /evolution/.chromium ./.chromium 
+COPY --from=builder /evolution/.chromium ./.chromium
+# Adicionando cópias de outros arquivos importantes para o runtime
+COPY --from=builder /evolution/public ./public
+COPY --from=builder /evolution/manager ./manager
+COPY --from=builder /evolution/runWithProvider.js ./runWithProvider.js
+COPY --from=builder /evolution/Docker ./Docker
 
 EXPOSE 8080
 
+# Comando final e robusto para iniciar a aplicação
 ENTRYPOINT ["/bin/bash", "-c", ". ./Docker/scripts/deploy_database.sh && npm run start:prod"]
