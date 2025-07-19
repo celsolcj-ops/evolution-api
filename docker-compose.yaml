@@ -6,7 +6,7 @@ services:
     ports:
       - "0.0.0.0:8080:8080"
     volumes:
-      # Monta o arquivo .env do servidor para dentro do container
+      # Monta o arquivo .env do servidor para dentro do container, resolvendo o erro "file not found"
       - ./.env:/evolution/.env
       # Monta o volume de dados para persistência da sessão
       - ./evolution_data:/evolution/data
