@@ -15,8 +15,7 @@ WORKDIR /evolution
 
 COPY ./package.json ./tsconfig.json ./
 RUN npm install --legacy-peer-deps
-# Copia o arquivo .env do servidor para dentro da imagem ANTES de copiar o resto.
-COPY ./.env ./.env
+
 # --- A CORREÇÃO ESTÁ AQUI ---
 # Copia TODOS os arquivos do projeto ANTES de executar qualquer script que dependa deles
 COPY . .
